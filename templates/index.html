@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Home{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+// <![CDATA[
+    function get_last_tweet() {
+        var loading_row = '<tr id="loading"><td><img src="/files/imgs/ajax-loader.gif" /></td></tr>';
+        var new_row = '<tr id="firstupdate"><td>update... FAIL!</td></tr>';
+        var old_first = $("#firstupdate").get();
+
+        $(loading_row).insertBefore("#firstupdate");
+
+        //var url = "/show/1014849819"
+        var url = "/update/" + $("#status").val();
+
+        $.getJSON(url, function(data) {
+            new_row = '<tr id="firstupdate"><td>' + data.text.linkify() + '</td></tr>';
+            $("#loading").remove();
+            $(new_row).insertBefore("#firstupdate");
+            $(old_first).removeAttr("id");
+        });
+    }
+String.prototype.linkify = function() {
+    return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+/, function(m) {
+            return m.link(m); }); };
+// ]]>
+</script>
+{% endblock %}
+
+{% block content %}
+    <textarea id="status" name="status" rows="2" cols="40"></textarea>
+    <input id="sendtweet" type="submit" value="Post in Twitter &rarr;" onclick="get_last_tweet();" />
+
+    <table border="0" id="timeline"` cellpadding="0">
+        {% for tweet in updates %}
+            {% if forloop.first %}
+                <tr id="firstupdate">
+            {% else %}
+                <tr>
+            {% endif %}
+            <td>{{ tweet.text }}</td></tr>
+        {% endfor %}
+    </table>
+ 
+{% endblock %}
