@@ -1,13 +1,21 @@
 # Django settings for grouptwitter project.
 import os
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Import the local twitter account settings
-from settings_twitter import *
+try:
+    from settings_twitter import *
+except:
+    raise Exception("""settings_twitter.py does not exist, please create one with this
+                    content:
+                    
+                    TWITTER_ACCOUNT = 'twitter_username'
+                    TWITTER_PASSWORD = 'twitter_password'""")
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 ADMINS = (
     ('Igor Guerrero', 'igfgt1@gmail.com'),

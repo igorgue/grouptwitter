@@ -1,4 +1,6 @@
 *.pyc
 *.swo
 *.swp
+.swp
+.swo
 settings_twitter.py
